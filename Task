@@ -1,0 +1,261 @@
+import java.util.*;
+
+public class Coditation {
+    
+    public static int rall=0;
+    public static int call = 0;
+    public static int p = 0;
+    public static String[][] createPattern() {
+
+        Scanner scan1 = new Scanner(System.in);
+         rall = scan1.nextInt();
+         call =  scan1.nextInt();
+         p = scan1.nextInt();
+         int calltemp = 2 * call + 1;
+
+        if(p <= 0 || p >((rall>call)?rall:call)) {
+            System.out.println("Enter Valid P");
+
+            p = scan1.nextInt();
+        }
+
+
+        String[][] f = new String[rall][calltemp];
+
+        for (int i = 0; i < f.length; i++) {
+
+
+
+            for (int j = 0; j < f[i].length; j++) {
+
+                if (j % 2 == 0) f[i][j] = "|";
+
+                else f[i][j] = " ";
+
+
+                if (i == rall) f[i][j] = "-";
+
+            }
+
+
+        }
+
+        return f;
+
+    }
+
+    public static void printPattern(String[][] f) {
+
+        for (int i = 0; i < f.length; i++) {
+
+            for (int j = 0; j < f[i].length; j++) {
+
+                System.out.print(f[i][j]);
+
+            }
+
+            System.out.println();
+
+        }
+
+    }
+
+    public static void dropRedPattern(String[][] f) {
+        System.out.println("Drop a red disk at column (0– " + (call-1) + "): ");
+
+        Scanner scan = new Scanner(System.in);
+
+        int c = 2 * scan.nextInt() + 1;
+
+        for (int i = rall-1; i >= 0; i--) {
+
+            if (f[i][c] == " ") {
+
+                f[i][c] = "R";
+
+                break;
+
+
+            }
+
+        }
+    }
+
+
+    public static void dropYellowPattern(String[][] f) {
+
+        System.out.println("Drop a yellow disk at column (0–" +(call-1) + "): ");
+
+        Scanner scan = new Scanner(System.in);
+
+        int c = 2 * scan.nextInt() + 1;
+
+        for (int i = rall-1; i >= 0; i--) {
+
+            if (f[i][c] == " ") {
+
+                f[i][c] = "Y";
+
+                break;
+
+
+            }
+
+
+        }
+
+    }
+
+
+    public static String checkWinner(String[][] f,String player) {
+
+        for (int i = 0; i < rall; i++) {
+
+
+            int count=0;
+            for (int j = 0; j < call; j ++) {
+
+                    if (f[i][j*2+1].equals(player))
+                        count++;
+                    else
+                        count=0;
+
+                    if (count>=p)
+                        return player;
+                }
+
+
+        }
+
+        for (int i = 0; i < call; i++) {
+            int count=0;
+            for (int j = 0; j < rall; j++) {
+                if (f[j][i*2+1].equals(player))
+                    count++;
+                else
+                    count = 0;
+
+                if (count >= p)
+                    return player;
+            }
+        }
+     /*   for (int i = 1; i < 15; i += 2) {
+
+            for (int j = 0; j < 3; j++) {
+
+                if ((f[j][i] != " ")
+
+                        && (f[j + 1][i] != " ")
+
+                        && (f[j + 2][i] != " ")
+
+                        && (f[j + 3][i] != " ")
+
+                        && ((f[j][i] == f[j + 1][i])
+
+                        && (f[j + 1][i] == f[j + 2][i])
+
+                        && (f[j + 2][i] == f[j + 3][i])))
+
+                    return f[j][i];
+
+            }
+
+        }
+
+
+
+        for (int i = 0; i < 3; i++) {
+
+            for (int j = 1; j < 9; j += 2) {
+
+                if ((f[i][j] != " ")
+
+                        && (f[i + 1][j + 2] != " ")
+
+                        && (f[i + 2][j + 4] != " ")
+
+                        && (f[i + 3][j + 6] != " ")
+
+                        && ((f[i][j] == f[i + 1][j + 2])
+
+                        && (f[i + 1][j + 2] == f[i + 2][j + 4])
+
+                        && (f[i + 2][j + 4] == f[i + 3][j + 6])))
+
+                    return f[i][j];
+
+            }
+
+        }
+
+
+        for (int i = 0; i < 3; i++) {
+
+            for (int j = 7; j < 15; j += 2) {
+
+                if ((f[i][j] != " ")
+
+                        && (f[i + 1][j - 2] != " ")
+
+                        && (f[i + 2][j - 4] != " ")
+
+                        && (f[i + 3][j - 6] != " ")
+
+                        && ((f[i][j] == f[i + 1][j - 2])
+
+                        && (f[i + 1][j - 2] == f[i + 2][j - 4])
+
+                        && (f[i + 2][j - 4] == f[i + 3][j - 6])))
+
+                    return f[i][j];
+
+            }
+
+        }
+
+*/
+        return null;
+
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        String[][] f = createPattern();
+
+        boolean loop = true;
+
+        int count = 0;
+
+        printPattern(f);
+
+        while (loop) {
+
+            if (count % 2 == 0) dropRedPattern(f);
+
+            else dropYellowPattern(f);
+
+            count++;
+            
+            printPattern(f);
+
+            if (checkWinner(f,"R") != null) {
+
+                if (checkWinner(f,"R") == "R")
+
+                    System.out.println("The red player won.");
+
+                else if (checkWinner(f,"Y") == "Y")
+
+                    System.out.println("The yello player won.");
+
+        
+                loop = false;
+
+            }
+
+        }
+
+    }
+
+}
